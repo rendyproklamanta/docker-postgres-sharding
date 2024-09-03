@@ -1,0 +1,16 @@
+version: "3"
+
+services:
+  haproxy:
+    image: haproxy:latest
+    ports:
+      - "3245:3245"
+      - "7000:7000"
+    volumes:
+      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+    networks:
+      - yugabyte-network
+
+networks:
+  yugabyte-network:
+    driver: bridge

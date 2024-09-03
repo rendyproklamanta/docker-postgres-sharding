@@ -1,0 +1,24 @@
+[general]
+host = "0.0.0.0"
+port = 6432
+admin_username = "pgcat"
+admin_password = "your_admin_password"
+
+[pools.yugabyte]
+pool_mode = "transaction"
+query_parser_enabled = true
+query_parser_read_write_splitting = true
+primary_reads_enabled = true
+default_role = "any"
+
+[pools.yugabyte.users.0]
+pool_size = 50
+username = "yugabyte"
+password = "yugabyte"
+
+[pools.yugabyte.shards.0]
+database = "yugabyte"
+servers = [
+    ["haproxy", 3245, "primary"],
+    ["haproxy", 3245, "replica"],
+]

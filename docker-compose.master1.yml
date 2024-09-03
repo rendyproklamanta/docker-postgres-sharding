@@ -1,0 +1,22 @@
+version: "3"
+services:
+  yb-master-1:
+    image: yugabytedb/yugabyte:latest
+    command: bash -c "
+      /home/yugabyte/bin/yb-master
+      --master_addresses=yb-master-1:7100,yb-master-2:7100,yb-master-3:7100
+      --rpc_bind_addresses=yb-master-1:7100
+      --fs_data_dirs=/mnt/data"
+    ports:
+      - "7001:7000"
+    volumes:
+      - yb-master-1:/mnt/data
+    networks:
+      - yugabyte-network
+
+networks:
+  yugabyte-network:
+    driver: bridge
+
+volumes:
+  yb-master-1:
