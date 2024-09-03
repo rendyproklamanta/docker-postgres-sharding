@@ -1,6 +1,7 @@
 #!/bin/bash
 
 docker stack rm yugabyte
+docker swarm init
 docker network create --driver overlay yugabyte-network
 
 cd nodes

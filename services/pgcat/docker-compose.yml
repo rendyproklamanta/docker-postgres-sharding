@@ -2,8 +2,8 @@ version: "3"
 
 services:
   pgcat:
+    hostname: pgcat
     image: ghcr.io/postgresml/pgcat:latest
-    container_name: pgcat
     volumes:
       - ./pgcat.toml:/etc/pgcat/pgcat.toml
     ports:
@@ -14,4 +14,4 @@ services:
 
 networks:
   yugabyte-network:
-    driver: bridge
+    external: true

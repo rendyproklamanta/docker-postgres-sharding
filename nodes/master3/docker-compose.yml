@@ -1,0 +1,41 @@
+version: "3"
+services:
+  yb-master-3:
+    hostname: yb-master-3
+    image: yugabytedb/yugabyte:latest
+    command: bash -c "
+      /home/yugabyte/bin/yb-master
+      --master_addresses=yb-master-1:7100,yb-master-2:7100,yb-master-3:7100
+      --rpc_bind_addresses=yb-master-3:7100
+      --fs_data_dirs=/mnt/data"
+    ports:
+      - "7003:7000"
+    volumes:
+      - yb-master-3:/mnt/data
+    networks:
+      - yugabyte-network
+
+  yb-tserver-3:
+    hostname: yb-tserver-3
+    image: yugabytedb/yugabyte:latest
+    command: bash -c "
+      /home/yugabyte/bin/yb-tserver
+      --tserver_master_addrs=yb-master-1:7100,yb-master-2:7100,yb-master-3:7100
+      --rpc_bind_addresses=yb-tserver-3:9100
+      --pgsql_proxy_bind_address 0.0.0.0:5443
+      --fs_data_dirs=/mnt/data"
+    ports:
+      - "9003:9000"
+      - "5443:5443" # Expose PostgreSQL-compatible port
+    volumes:
+      - yb-tserver-3:/mnt/data
+    networks:
+      - yugabyte-network
+
+networks:
+  yugabyte-network:
+    external: true
+
+volumes:
+  yb-master-3:
+  yb-tserver-3:

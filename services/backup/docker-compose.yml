@@ -1,0 +1,22 @@
+version: "3"
+
+services:
+  postgres-cron-backup:
+    image: ghcr.io/mentos1386/postgres-cron-backup
+    volumes:
+      - ./data:/backup
+    environment:
+      - POSTGRES_HOST=haproxy
+      - POSTGRES_USER=yugabyte
+      - POSTGRES_PASS=yugabyte
+      - POSTGRES_PORT=3245
+      - MAX_BACKUPS=6
+      - INIT_BACKUP=1
+      - CRON_TIME=0 */6 * * *
+      - GZIP_LEVEL=9
+    networks:
+      - yugabyte-network
+
+networks:
+  yugabyte-network:
+    external: true

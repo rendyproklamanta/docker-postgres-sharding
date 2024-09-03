@@ -2,6 +2,7 @@ version: "3"
 
 services:
   haproxy:
+    hostname: haproxy
     image: haproxy:latest
     ports:
       - "3245:3245"
@@ -13,4 +14,4 @@ services:
 
 networks:
   yugabyte-network:
-    driver: bridge
+    external: true
